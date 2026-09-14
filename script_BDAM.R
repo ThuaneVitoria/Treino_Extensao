@@ -11,11 +11,28 @@ dados_bd2= read.csv2(file = "banco 1 SIM.csv", na.strings = '')
 dados_bd2
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Treino_Extensao
 
-
+summary(dados_bd2)
 # Tarefa 2: Manipulação dos dados
 # Padronizar as categorias SEXO_PROPRIETARIO para Masculino e Feminino
+library(dplyr)
+
+dados_bd2$SEXO_CONDUTOR_CAUSADOR= factor(dados_bd2$SEXO_CONDUTOR_CAUSADOR,labels = c("Masculino",'Feminino'), levels = c(1,2))
+
 # Atribuir legendas para a variável TIPO_VEICULO, sendo 1: Carro e 2: Moto
+dados_bd2 = dados_bd2|>
+rename(TIPO_VEICULO = VEICULO_CAUSADOR)
+
+dados_bd2 = dados_bd2|> 
+  mutate(TIPO_VEICULO = case_match(TIPO_VEICULO, c('moto', 'MOTO','Moto') ~2,
+                                     c('carro','Carro','CARRO') ~ 1))
+
+
+dados_bd2 = dados_bd2|>
+  mutate(TIPO_VEICULO = factor(TIPO_VEICULO, levels = c(1,2), labels=c('Carro', "Moto")))
+
 # Criar uma nova variável em dados_bd2 F_IDADE categorizando as idades em: 22 a 34, 35 a 45
+dados_bd2 = dados_bd2|>
+mutate(F_IDADE = cut(dados_bd2$IDADE_CONDUTOR_CAUSADOR, breaks = c(21,34,45), labels = c('A','B')))
 
 # Ao terminar a Tarefa 2 commit com a mensagem " script - tarefa 1 a 2" e envie para o repositório Treino_Extensao
 
@@ -28,7 +45,7 @@ dados_bd2
 # NIVEL: UF ou MUNICIPIO
 # CODIGO: código do municipio (ou da UF)
 # TVV: total de veiculos vendidos
-# TCV: total de carros vendidos
+# TCV: total de carros vendidoschmod 600 ~/.git-credentials && git push
 # TMV: total de motos vendidas
 # TVVF: total de veículos vendidos para mulher
 # TVVM: total de veículos vendidos para homem
@@ -49,5 +66,3 @@ dados_bd2
 # Tarefa 4: Exportar o banco de dados BANCO2_RJ com o nome BANCO2_RJ.csv
 
 # Ao terminar a Tarefa 4 commit com a mensagem "dados e script - Etapa 2" e envie para o repositório Treino_Extensao
-
-
