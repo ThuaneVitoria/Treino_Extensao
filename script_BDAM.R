@@ -116,6 +116,9 @@ dados_bd3 = read.csv2('banco 3 SIDRA.csv')
 
 # Tarefa 2: Manipulação dos dados
 # Criar a variável MUNICIPIOS = MUNICIPIO em dados_bd3, sendo que agora com 6 dígitos (em vez de 7 dígitos), desprezando o último dígito verificador
+library(dplyr)
+dados_bd3 = dados_bd3 |> 
+  mutate(MUNICIPIOS = MUNICIPIO %/% 10)
 
 # Ao terminar a Tarefa 2 commit com a mensagem " script - tarefa 1 a 2" e envie para o repositório Treino_Extensao
 
