@@ -131,6 +131,15 @@ dados_bd3 = dados_bd3 |>
 # POPH: população total de habilitados
 # POPHF: população total feminina de habilitadas
 # POPHM: população total masculina de habilitadas
+BANCO_RJ = dados_bd3 |> group_by(MUNICIPIOS)|>
+summarise(
+  ANO = 2025,
+  NIVEL = 'MUNICÍPIO',
+  CODIGO = MUNICIPIOS,
+  POPH = sum(HABILITADOS_GERAL_2025),
+  POPHF = sum(POP_FEM_HABILITADA_2020),
+  POPHM = sum(POP_MASC_HABILITADA_2020)
+)
 
 # Ao terminar a Tarefa 3 commit com a mensagem " script - tarefa 1 a 3" e envie para o repositório Treino_Extensao
 
