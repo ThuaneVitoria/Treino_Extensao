@@ -145,7 +145,7 @@ summarise(
 
 
 # Tarefa 4: Exportar o banco de dados BANCO3_RJ com o nome BANCO3_RJ.csv
-
+write.csv2(BANCO_RJ, 'BANCO_RJ.csv')
 # Ao terminar a Tarefa 4 commit com a mensagem "dados e script - Etapa 3" e envie para o repositório Treino_Extensao
 
 
