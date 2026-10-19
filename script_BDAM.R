@@ -249,14 +249,27 @@ write.csv2(BANCO3_RJ, 'BANCO3_RJ.csv')
 # Tarefa 1: Leitura do banco de dados banco 4 = ATLAS.csv com o nome de dados_bd4 e do arquivo com tabela de códigos do IBGE
 # códigos dos municípios - 2010.csv" com os códigos do IBGE para os municípios do Brasil
 # Ler os arquivos, verificar estruturas dos dados e dar uma olhada nos dados
+library(dplyr)
 
+dados_bd4 = read.csv2('banco 4 ATLAS.csv', encoding = 'latin1')
+codigos_ibge = read.csv2('códigos dos municípios - 2010.csv')
+
+glimpse(dados_bd4)
+glimpse(codigos_ibge)
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Treino_Extensao
 
 
 # Tarefa 2: Manipulação dos dados
 # Criar uma nova variável em dados_bd4 MUNICIPIOS atribuindo os códigos dos municípios, de forma a ficar
 # coerente com os nomes dos municipios e códigos IBGE
-
+dados_bd4 = dados_bd4 |> 
+  left_join(codigos_ibge, by = c("MUNICIPIO" = "município")) |> 
+  mutate(MUNICIPIOS = CODMUNRES %/% 10) |> 
+  mutate(
+    QUALIDADE_RODOVIAS_2020 = as.numeric(as.character(QUALIDADE_RODOVIAS_2020)),
+    QUALIDADE_URBANA_2025   = as.numeric(as.character(QUALIDADE_URBANA_2025)),
+    QUALIDADE_RURAL_2025    = as.numeric(as.character(QUALIDADE_RURAL_2025))
+  )
 # Ao terminar a Tarefa 2 commit com a mensagem " script - tarefa 1 a 2" e envie para o repositório Treino_Extensao
 
 
@@ -269,12 +282,32 @@ write.csv2(BANCO3_RJ, 'BANCO3_RJ.csv')
 # QRU: qualidade das rodovias urbanas
 # QRR: qualidade das rodovias rurais
 
+linha_uf = data.frame(
+  ANO = 2025,
+  NIVEL = 'UF',
+  CODIGO = 33,
+  QR_CA = mean(dados_bd4$QUALIDADE_RODOVIAS_2020, na.rm = TRUE),
+  QRU = mean(dados_bd4$QUALIDADE_URBANA_2025, na.rm = TRUE),
+  QRR = mean(dados_bd4$QUALIDADE_RURAL_2025, na.rm = TRUE)
+)
 
+tabela_municipios = dados_bd4 |> 
+  group_by(MUNICIPIOS) |> 
+  summarise(
+    ANO = 2025,
+    NIVEL = 'MUNICÍPIO',
+    CODIGO = MUNICIPIOS,
+    QR_CA = mean(QUALIDADE_RODOVIAS_2020, na.rm = TRUE),
+    QRU = mean(QUALIDADE_URBANA_2025, na.rm = TRUE),
+    QRR = mean(QUALIDADE_RURAL_2025, na.rm = TRUE)
+  )
+
+BANCO4_RJ = bind_rows(linha_uf, tabela_municipios)
 # Ao terminar a Tarefa 3 commit com a mensagem " script - tarefa 1 a 3" e envie para o repositório Treino_Extensao
 
 
 # Tarefa 4: Exportar o banco de dados BANCO4_RJ com o nome BANCO4_RJ.csv
-
+write.csv2(BANCO4_RJ, 'BANCO4_RJ.csv')
 # Ao terminar a Tarefa 4 commit com a mensagem "dados e script - Etapa 4" e envie para o repositório Treino_Extensao
 
 
@@ -377,7 +410,18 @@ write.csv2(BANCO5_RJ, 'BANCO5_RJ.csv')
 # TACO: total de acidentes cuja causa foi outros
 # NCR: número de carros registrados
 # NMR: número de motos registradas
+banco1 = read.csv2('BANCO1_RJ.csv')
+banco2 = read.csv2('BANCO2_RJ.csv')
+banco3 = read.csv2('BANCO3_RJ.csv')
+banco4 = read.csv2('BANCO4_RJ.csv')
+banco5 = read.csv2('BANCO5_RJ.csv')
 
+BDAM_RJ = banco3 |> 
+  left_join(banco4, by = c("ANO", "NIVEL", "CODIGO")) |> 
+  left_join(banco1, by = c("ANO", "NIVEL", "CODIGO")) |> 
+  left_join(banco2, by = c("ANO", "NIVEL", "CODIGO")) |> 
+  left_join(banco5, by = c("ANO", "NIVEL", "CODIGO")) |> 
+  arrange(desc(NIVEL), CODIGO)
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Treino_Extensao
 
 
