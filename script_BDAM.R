@@ -426,6 +426,6 @@ BDAM_RJ = banco3 |>
 
 
 # Tarefa 2: Exportar o banco de dados BDAM_RJ com o nome BDAM_RJ.csv
-
+write.csv2(BDAM_RJ, 'BDAM_RJ.csv')
 # Ao terminar a Tarefa 2 commit com a mensagem "dados e script - Etapa 6" e envie para o repositório Treino_Extensao
 
