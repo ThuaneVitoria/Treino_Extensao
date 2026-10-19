@@ -190,7 +190,12 @@ glimpse(dados_bd5)
 
 # Tarefa 2: Manipulação dos dados
 # Observe que os números estão com ponto indicando milhar. Estes pontos devem ser extraídos para não confundir com decimal
+num_cols = c('NUM_CARROS_REGISTRADOS','NUM_MOTOS_REGISTRADAS')
 
+dados_bd5[num_cols] = lapply(dados_bd5[num_cols], function(x) {
+  as.numeric(gsub(".", "", x, fixed = TRUE))})
+
+summary(dados_bd5)
 # Ao terminar a Tarefa 2 commit com a mensagem " script - tarefa 1 a 2" e envie para o repositório Treino_Extensao
 
 
