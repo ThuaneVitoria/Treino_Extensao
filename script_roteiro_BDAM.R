@@ -180,6 +180,10 @@
 
 # Tarefa 1: Leitura do banco de dados banco 5 = SINISA.csv com o nome de dados_bd5 
 # Ler os arquivos, verificar estruturas dos dados e dar uma olhada nos dados
+library(dplyr)
+
+dados_bd5 = read.csv2('banco 5 SINISA.csv')
+glimpse(dados_bd5)
 
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Treino_Extensao
 
